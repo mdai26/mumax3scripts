@@ -1,0 +1,34 @@
+SetMesh(64,64,1,1e-9,1e-9,1e-9,1,1,0)
+SetGeom(cuboid(64e-9,64e-9,1e-9))
+
+Msat  = 6.20e5
+Aex   = -2.42e-12
+alpha = 0.01
+
+anisU = Vector(0,0,1)
+Ku1 = Ku1Value
+
+m = Uniform(0,0,1)
+
+Dind = -3.5e-3
+
+NoDemagSpins = 1
+
+Temp = TempValue
+
+OutputFormat = OVF2_TEXT
+
+SetSolver(4)
+FixDt = 2e-14
+
+TableAutosave(1e-12)
+tableadd(Edens_anis)
+tableadd(Edens_demag)
+tableadd(Edens_exch)
+tableadd(Edens_Zeeman)
+tableadd(Edens_total)
+autosave(m,2e-11)
+
+save(regions)
+Steps(400000)
+
