@@ -38,9 +38,18 @@ def netplot(dim, net, imagename):
     ax = fig.add_subplot(111)
     ax.set_aspect('equal', 'box')
     ax.quiver(nx, ny, netx, nety, netz, pivot = 'mid', cmap = cm.bwr, clim = (-1,1), scale_units='xy',angles='xy')
-    plt.savefig(imagename)
+    plt.savefig(imagename, bbox_inches='tight')
     plt.close(fig)
 
+def netzplot(dim, net, imagename):
+    fig = plt.figure(figsize = (12,12))
+    ax = fig.add_subplot(111)
+    ax.imshow(net[:,:,2].T, vmin=-1, vmax=1, cmap='bwr',origin='lower')
+    ax.axis('square')
+    ax.set_xticks([])
+    ax.set_yticks([])
+    plt.savefig(imagename, bbox_inches='tight')
+    plt.close(fig)
 
 def readnet(dim, filename):
     # read net vector from file
@@ -92,15 +101,15 @@ def netanalysis(net,dim):
                 toponumberN1 = toponumberN1 + 1 / (4*math.pi) * (trag1 + trag2 + trag3 + trag4)
             else:
                 toponumberN2 = toponumberN2 + 1 / (4*math.pi) * (trag1 + trag2 + trag3 + trag4)
+                
+    toponumberN1, toponumberN2 = toponumberN1 / 2., toponumberN2 / 2. 
 
     return toponumberN1, toponumberN2
 
 
 # specify the list of parameters 
-Ku1list = [0.2, 0.4, 0.6, 0.8, 1.0, 1.2]
-Templist = [0, 50, 100, 150, 200, 250, 300]
-#Ku1list = [0.4]
-#Templist = [50]
+Ku1list = [1.0,1.5,2.0]
+Templist = range(0,100,5)
 # specify the output path
 outdir = 'result'
 # specify dimension
@@ -119,6 +128,8 @@ for Ku1 in Ku1list:
         # plot figure
         imagename = os.path.join(outdir, 'AFM_Ku1_%.1f_Temp_%d.png' % (Ku1, Temp))
         netplot(dim, net, imagename)
+        imagename2 = os.path.join(outdir, 'AFM_netz_Ku1_%.1f_Temp_%d.png' % (Ku1, Temp))
+        netzplot(dim, net, imagename2)
         # get topological number
         topo1, topo2 = netanalysis(net,dim)
         # output
