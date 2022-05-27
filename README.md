@@ -25,3 +25,11 @@ collectresult.py can be used to automatically
 ```
 python collectresult.py
 ```
+## extract total energy from table.txt
+getenergy.py can be used to automatically
+1) extract total energy from a certain time step of table.txt file
+2) save the extracted energy in csv file
+
+```
+python getenergy.py
+```
